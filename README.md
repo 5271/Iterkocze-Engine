@@ -1,2 +1,2 @@
-# Iterkocze-Engine
-Iterkocze Engine is a simple and easy to use text based engine.
+# Iterkocze GameEngine
+Iterkocze GameEngine is a simple and easy to use text based engine.
