@@ -1,6 +1,7 @@
 import std/terminal;
 import base;
 import debug;
+import strutils;
 
 var
     xResMap*, yResMap*, firstXPos*, lastXPos*, firstYPos*, lastYPos*: int
@@ -37,6 +38,9 @@ proc initializeMap*(xResInp: int, yResInp: int, xPosInp: int = 0, yPosInp: int =
         lastYPos += 1;
 
 proc putChar*(posX: int, posY: int, ch: char) =
+    if posX+firstXPos > lastXPos or posY+firstYPos > lastYPos:
+        printError "Given position on the map is out of it's boundaries";
+        return;
     screen[posY+firstYPos][posX+firstXPos].character = ch;
     draw();
 

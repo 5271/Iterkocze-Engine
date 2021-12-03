@@ -16,11 +16,6 @@ var
     screen*: array[screenResX, array[screenResY, screenChar]]
     xRes*, yRes*: int
     error*: bool = false
-    #[
-    testScreenChar*: screenChar = screenChar(character : '.',
-                                             backColor : bgBlack,
-                                             foreColor : fgWhite)
-    ]#
     backgroundScreenChar*: screenChar = screenChar(
         character : ' ',
         backColor : bgBlack,
