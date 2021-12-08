@@ -24,8 +24,11 @@ var
 
 # Call this function to create the screen
 proc initializeScreen*(xResInp: int, yResInp: int, backgroundChar: char = ' ') =
-#[ xResInp - Horizontal resolution of the screen
-   yResInp - Vertical resolution of the screen ]#
+#[ 
+    xResInp - Width of the screen
+    yResInp - Height of the screen 
+    backgroundChar - Symbol that fills the background of the screen
+]#
 
     try:
         xRes = xResInp;
@@ -41,24 +44,53 @@ proc initializeScreen*(xResInp: int, yResInp: int, backgroundChar: char = ' ') =
         printError repr(getCurrentException()) & "|" & getCurrentExceptionMsg();
     
 
-# Draws all the content in the screen
+# Draws all the content of the screen
 proc draw*() =
-    discard execCmd "clear";
-    for i in 0..yRes:
-        for ii in 0..xRes:
-            stdout.write screen[i][ii].character;
-        stdout.write '\n';
+    try:
+        discard execCmd "clear";
+        for i in 0..yRes:
+            for ii in 0..xRes:
+                stdout.write screen[i][ii].character;
+            stdout.write '\n';
+
+    except:
+        printError repr(getCurrentException()) & "|" & getCurrentExceptionMsg();
 
 # Puts a character on the screen in the specified coordiantes
 proc putCharOnScreen*(posX: int, posY: int, ch: char) =
+#[
+    posX - Horizontal position on screen
+    posY - Vertical position on screen
+    ch - Character to put
+]#
     try:
         screen[posY][posX].character = ch; 
         draw();
+
+    except:
+        printError repr(getCurrentException()) & "|" & getCurrentExceptionMsg();
+
+proc getCharFromScreen*(posX: int, posY: int) : char =
+#[
+    posX - Horizontal position on screen
+    posY - Vertical position on screen
+]#
+    try:
+        return screen[posY][posX].character; 
+
     except:
         printError repr(getCurrentException()) & "|" & getCurrentExceptionMsg();
 
 # Draws a rectangle
 proc drawRectangleOnScreen*(posX: int, posY: int, height: int, width: int, ch: char) =
+#[
+    posX - Horizontl position of start of the rectangle on screen
+    posY - Vertical position of start of the rectangle on screen
+    (Start of the rectangle is top left corner)
+    height - Height of the rectangle
+    width - Width of the rectangle
+    ch - Character that fills the rectangle
+]#
     try:
         for i in 0..height-1:
             for ii in 0..width-1:
