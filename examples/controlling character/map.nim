@@ -5,7 +5,7 @@ import debug;
 var
     xResMap*, yResMap*, firstXPos*, lastXPos*, firstYPos*, lastYPos*: int
     padding*, border*: bool
-    backgroundMapChar: screenChar = screenChar(
+    backgroundMapChar: ScreenChar = ScreenChar(
         character : ' ',
         backColor : bgBlack,
         foreColor : fgWhite                    

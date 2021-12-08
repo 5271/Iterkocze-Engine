@@ -5,6 +5,7 @@ import std/terminal;
 
 initializeScreen 19, 19, '.';
 initializeMap 16, 16, 2, 2, ' ';
+drawRectangle 2, 2, 4, 3, '@';
 type 
     position = object
         x: int

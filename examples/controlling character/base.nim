@@ -7,16 +7,16 @@ const
     screenResY*: int = 2048;
 
 type
-    screenChar* = object
+    ScreenChar* = object
         character*: char
         backColor*: BackgroundColor
         foreColor*: ForegroundColor;
 
 var 
-    screen*: array[screenResX, array[screenResY, screenChar]]
+    screen*: array[screenResX, array[screenResY, ScreenChar]]
     xRes*, yRes*: int
     error*: bool = false
-    backgroundScreenChar*: screenChar = screenChar(
+    backgroundScreenChar*: ScreenChar = ScreenChar(
         character : ' ',
         backColor : bgBlack,
         foreColor : fgWhite

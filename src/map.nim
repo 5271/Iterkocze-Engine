@@ -5,14 +5,14 @@ import debug;
 var
     xResMap*, yResMap*, firstXPos*, lastXPos*, firstYPos*, lastYPos*: int
     padding*, border*: bool
-    backgroundMapChar: screenChar = screenChar(
+    backgroundMapChar: ScreenChar = ScreenChar(
         character : ' ',
         backColor : bgBlack,
         foreColor : fgWhite                    
     );
 
 # Call this function to create the map (2D area which you can and should draw on)
-proc initializeMap*(xResInp: int, yResInp: int, xPosInp: int = 0, yPosInp: int = 0, backgroundChar: char = ' ', paddingInp: bool = false, borderInp: bool = false) =
+proc initializeMap*(xResInp: int, yResInp: int, pos: Position, backgroundChar: char = ' ', paddingInp: bool = false, borderInp: bool = false) =
 #[
     xResInp - Width of the map
     yResInp - Height of the map
@@ -32,8 +32,8 @@ proc initializeMap*(xResInp: int, yResInp: int, xPosInp: int = 0, yPosInp: int =
         padding = paddingInp;
         border = borderInp;
 
-        firstXPos = xPosInp;
-        firstYPos = yPosInp;
+        firstXPos = pos.X;
+        firstYPos = pos.Y;
         lastXPos = xResInp + firstXPos - 1;
         lastYPos = yResInp + firstYPos - 1;
 
@@ -52,40 +52,40 @@ proc initializeMap*(xResInp: int, yResInp: int, xPosInp: int = 0, yPosInp: int =
         printError repr(getCurrentException()) & "|" & getCurrentExceptionMsg();
 
 # Puts a character on the map
-proc putChar*(posX: int, posY: int, ch: char) =
+proc putChar*(pos: Position, ch: char) =
 #[
     posX - Horizontal position on map
     posY - Vertical position on map
     ch - Character to put
 ]#
     try:
-        if posX+firstXPos > lastXPos or posY+firstYPos > lastYPos or posX+firstXPos < firstXPos or posY+firstYPos < firstYPos:
+        if pos.X+firstXPos > lastXPos or pos.Y+firstYPos > lastYPos or pos.X+firstXPos < firstXPos or pos.Y+firstYPos < firstYPos:
             printError "Given position on the map is out of it's boundaries";
             return;
-        screen[posY+firstYPos][posX+firstXPos].character = ch;
+        screen[pos.Y+firstYPos][pos.X+firstXPos].character = ch;
         draw();
     
     except:
         printError repr(getCurrentException()) & "|" & getCurrentExceptionMsg();
 
 # Gets a character from the map
-proc getChar*(posX: int, posY: int) : char =
+proc getChar*(pos: Position) : char =
 #[
     posX - Horizontal position on map
     posY - Vertical position on map
 ]#
     try:
-        if posX+firstXPos > lastXPos or posY+firstYPos > lastYPos:
+        if pos.X+firstXPos > lastXPos or pos.Y+firstYPos > lastYPos:
             printError "Given position on the map is out of it's boundaries";
             return ' ';
-        let returnVal = screen[posY+firstYPos][posX+firstXPos].character;
+        let returnVal = screen[pos.Y+firstYPos][pos.X+firstXPos].character;
         return returnVal;
 
     except:
         printError repr(getCurrentException()) & "|" & getCurrentExceptionMsg();
 
 # Draws a character on the map
-proc drawRectangle*(posX: int, posY: int, height: int, width: int, ch: char) =
+proc drawRectangle*(pos: Position, height: int, width: int, ch: char) =
 #[
     posX - Horizontl position of start of the rectangle on map
     posY - Vertical position of start of the rectangle on map
@@ -97,7 +97,7 @@ proc drawRectangle*(posX: int, posY: int, height: int, width: int, ch: char) =
     try:
         for i in 0..height-1:
             for ii in 0..width-1:
-                putChar i+posX, ii+posY, ch;
+                putChar Position(X : i+pos.X,Y : ii+pos.Y), ch;
         draw();
 
     except:
