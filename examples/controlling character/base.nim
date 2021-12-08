@@ -10,7 +10,10 @@ type
     ScreenChar* = object
         character*: char
         backColor*: BackgroundColor
-        foreColor*: ForegroundColor;
+        foreColor*: ForegroundColor
+    Position* = object
+        X* : int
+        Y* : int;
 
 var 
     screen*: array[screenResX, array[screenResY, ScreenChar]]
@@ -57,32 +60,32 @@ proc draw*() =
         printError repr(getCurrentException()) & "|" & getCurrentExceptionMsg();
 
 # Puts a character on the screen in the specified coordiantes
-proc putCharOnScreen*(posX: int, posY: int, ch: char) =
+proc putCharOnScreen*(pos: Position, ch: char) =
 #[
     posX - Horizontal position on screen
     posY - Vertical position on screen
     ch - Character to put
 ]#
     try:
-        screen[posY][posX].character = ch; 
+        screen[pos.Y][pos.X].character = ch; 
         draw();
 
     except:
         printError repr(getCurrentException()) & "|" & getCurrentExceptionMsg();
 
-proc getCharFromScreen*(posX: int, posY: int) : char =
+proc getCharFromScreen*(pos: Position) : char =
 #[
     posX - Horizontal position on screen
     posY - Vertical position on screen
 ]#
     try:
-        return screen[posY][posX].character; 
+        return screen[pos.Y][pos.X].character; 
 
     except:
         printError repr(getCurrentException()) & "|" & getCurrentExceptionMsg();
 
 # Draws a rectangle
-proc drawRectangleOnScreen*(posX: int, posY: int, height: int, width: int, ch: char) =
+proc drawRectangleOnScreen*(pos: Position, height: int, width: int, ch: char) =
 #[
     posX - Horizontl position of start of the rectangle on screen
     posY - Vertical position of start of the rectangle on screen
@@ -94,6 +97,6 @@ proc drawRectangleOnScreen*(posX: int, posY: int, height: int, width: int, ch: c
     try:
         for i in 0..height-1:
             for ii in 0..width-1:
-                putCharOnScreen i+posX, ii+posY, ch;
+                putCharOnScreen Position(X : i+pos.X, Y : ii+pos.Y), ch;
     except:
         printError repr(getCurrentException()) & "|" & getCurrentExceptionMsg();
