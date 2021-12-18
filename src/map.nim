@@ -9,7 +9,8 @@ var
         character : ' ',
         backColor : bgBlack,
         foreColor : fgWhite                    
-    );
+    )
+    isMapInitialized*: bool = false;
 
 # Call this function to create the map (2D area which you can and should draw on)
 proc initializeMap*(xResInp: int, yResInp: int, pos: Position, backgroundChar: char = ' ', paddingInp: bool = false, borderInp: bool = false) =
@@ -21,6 +22,9 @@ proc initializeMap*(xResInp: int, yResInp: int, pos: Position, backgroundChar: c
     paddingInp - Space between every symbol on the map
     borderInp - Border around the map (also not working)
 ]#
+    if isMapInitialized:
+        printError "Map can't be initialized more than once.";
+        return;
 
     try:        
         backgroundMapChar.character = backgroundChar;
@@ -42,16 +46,11 @@ proc initializeMap*(xResInp: int, yResInp: int, pos: Position, backgroundChar: c
         lastXPos = xResInp + firstXPos - 1;
         lastYPos = yResInp + firstYPos - 1;
 
-        if border:
-            firstXPos += 1;
-            lastXPos += 1;
-
-            firstYPos += 1;
-            lastYPos += 1;
-
         for i in 0..yResMap-1:
             for ii in 0..xResMap-1:
                 screen[i+firstYPos][ii+firstXPos] = backgroundMapChar;
+
+        isMapInitialized = true;
 
     except:
         printError repr(getCurrentException()) & "|" & getCurrentExceptionMsg();

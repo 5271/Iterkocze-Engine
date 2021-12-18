@@ -3,8 +3,8 @@ import osproc;
 import debug;
 
 const
-    screenResX*: int = 2048
-    screenResY*: int = 2048;
+    resX*: int = 2048
+    resY*: int = 2048;
 
 type
     ScreenChar* = object
@@ -16,8 +16,8 @@ type
         Y* : int;
 
 var 
-    screen*: array[screenResX, array[screenResY, ScreenChar]]
-    xRes*, yRes*: int
+    screen*: array[resX, array[resY, ScreenChar]]
+    xResScreen*, yResScreen*: int
     error*: bool = false
     backgroundScreenChar*: ScreenChar = ScreenChar(
         character : ' ',
@@ -34,13 +34,13 @@ proc initializeScreen*(xResInp: int, yResInp: int, backgroundChar: char = ' ') =
 ]#
 
     try:
-        xRes = xResInp;
-        yRes = yResInp;
+        xResScreen = xResInp;
+        yResScreen = yResInp;
 
         backgroundScreenChar.character = backgroundChar;
         
-        for i in 0..screenResX-1:
-            for ii in 0..screenResY-1:
+        for i in 0..resX-1:
+            for ii in 0..resY-1:
                 screen[i][ii] = backgroundScreenChar;
         
     except:
@@ -51,8 +51,8 @@ proc initializeScreen*(xResInp: int, yResInp: int, backgroundChar: char = ' ') =
 proc draw*() =
     try:
         discard execCmd "clear";
-        for i in 0..yRes:
-            for ii in 0..xRes:
+        for i in 0..yResScreen:
+            for ii in 0..xResScreen:
                 stdout.write screen[i][ii].character;
             stdout.write '\n';
 
